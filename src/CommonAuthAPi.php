@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Dx\Commonauthapi;
+namespace Dxkjcomposer\Comauthapi;
 
 
 
