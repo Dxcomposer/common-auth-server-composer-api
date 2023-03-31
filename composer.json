@@ -1,0 +1,19 @@
+{
+    "name": "dx/commonauthapi",
+    "description": "common auth server api",
+    "require": {
+        "guzzlehttp/guzzle": "^7.5",
+        "ext-json": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dx\\Commonauthapi\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "dx",
+            "email": "composer@ifun.com"
+        }
+    ]
+}
