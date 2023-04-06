@@ -47,7 +47,6 @@ class CommonAuthAPi
         if($pwd){
             $params['pwd']=$pwd;
         }
-        var_dump($params);
         return self::http($this->ips,'/api/user/login',$params);
     }
 
@@ -162,6 +161,32 @@ class CommonAuthAPi
     {
         return self::http($this->ips,'/api/user/details',[ 'projectKey'=>$this->projectKey,'usernames'=>$usernames]);
     }
+
+    /**
+     * 查询当前项目下所有的用户
+     * @param int $type 1系统用户  2普通用户
+     * @param int $del -1所有 0未删除  1已删除
+     * @return Result
+     * @throws GuzzleException
+     */
+    public function userAll(int $type=0,int $del=-1):Result
+    {
+        $params=[
+            'projectKey'=>$this->projectKey,
+        ];
+        if(in_array($type,[1,2]))
+        {
+            $params['type']=(int)$type;
+        }
+
+        if ($del!=-1&&in_array($del,[0,1]))
+        {
+            $params['isDel']=(int)$del;
+        }
+        return self::http($this->ips,'/api/user/all',$params);
+    }
+
+
 
 
     /**
