@@ -53,7 +53,7 @@ class CommonAuthAPi
         if($pwd){
             $params['pwd']=$pwd;
         }
-        return self::http($this->ips,'/api/user/login',$params);
+        return $this->http($this->ips,'/api/user/login',$params,$this->requestCode);
     }
 
     /**
@@ -64,7 +64,7 @@ class CommonAuthAPi
      */
     public function checkToken(string $token):Result
     {
-        return $this->http($this->ips,'/api/user/tokenCheck',['token'=>$token]);
+        return $this->http($this->ips,'/api/user/tokenCheck',['token'=>$token],$this->requestCode);
     }
 
     /**
@@ -75,7 +75,7 @@ class CommonAuthAPi
      */
     public function loginOut(string $token):Result
     {
-        return $this->http($this->ips,'/api/user/loginOut',['token'=>$token]);
+        return $this->http($this->ips,'/api/user/loginOut',['token'=>$token],$this->requestCode);
     }
 
     /**
@@ -85,7 +85,7 @@ class CommonAuthAPi
      */
     public function projectDetail():Result
     {
-        return $this->http($this->ips,'/api/project/details',['projectKeys'=>[$this->projectKey]]);
+        return $this->http($this->ips,'/api/project/details',['projectKeys'=>[$this->projectKey]],$this->requestCode);
     }
 
     /**
@@ -115,7 +115,7 @@ class CommonAuthAPi
             $params['head']=$head;
         }
 
-        return $this->http($this->ips,'/api/user/create',$params);
+        return $this->http($this->ips,'/api/user/create',$params,$this->requestCode);
     }
 
     /**
@@ -154,7 +154,7 @@ class CommonAuthAPi
         {
             return new Result(false,'未做任何修改');
         }
-        return $this->http($this->ips,'/api/user/edit',$params);
+        return $this->http($this->ips,'/api/user/edit',$params,$this->requestCode);
     }
 
     /**
@@ -165,7 +165,7 @@ class CommonAuthAPi
      */
     public function userDetail(array $usernames):Result
     {
-        return $this->http($this->ips,'/api/user/details',[ 'projectKey'=>$this->projectKey,'usernames'=>$usernames]);
+        return $this->http($this->ips,'/api/user/details',[ 'projectKey'=>$this->projectKey,'usernames'=>$usernames],$this->requestCode);
     }
 
     /**
@@ -189,10 +189,8 @@ class CommonAuthAPi
         {
             $params['isDel']=(int)$del;
         }
-        return $this->http($this->ips,'/api/user/all',$params);
+        return $this->http($this->ips,'/api/user/all',$params,$this->requestCode);
     }
-
-
 
 
     /**
@@ -200,10 +198,11 @@ class CommonAuthAPi
      * @param array $ips
      * @param string $uri
      * @param array $params
+     * @param string $requestCode
      * @return Result
      * @throws GuzzleException
      */
-    public  function http(array $ips,string $uri,array $params=[]):Result
+    public static function http(array $ips,string $uri,array $params=[],string $requestCode=''):Result
     {
         try {
             $ip=$ips[array_rand($ips)];
@@ -211,7 +210,7 @@ class CommonAuthAPi
             {
                 $ip='http://'.$ip;
             }
-            $response=(new Client())->post($ip.$uri,['form_params'=>$params,'headers'=>['request-code'=>$this->requestCode]]);
+            $response=(new Client())->post($ip.$uri,['form_params'=>$params,'headers'=>['request-code'=>$requestCode]]);
 
             $res=$response->getBody()->getContents();
 
