@@ -11,5 +11,7 @@
             "email": "composer@ifun.com"
         }
     ],
-    "require": {}
+    "require": {
+        "ext-json": "*"
+    }
 }
